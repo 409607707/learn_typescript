@@ -1,5 +1,5 @@
-import { MatchReader as Reader } from './MatchReader'
-import { MatchResult } from './MatchResult'
+import { MatchReader } from './MatchReader'
+import { Summary } from './Summary'
 // 流程是：加载football.csv文件中的数据，进行解析， 然后进行分析，最后生成报告
 // Load --> parse  --> Analyze  --> report
 // 第一版
@@ -11,13 +11,18 @@ import { MatchResult } from './MatchResult'
 //   return row.split(',')
 // })
 // 提取获取数据的逻辑，可以让代码更加易于复用
-const reader = new Reader('football.csv')
-reader.read()
-let dateOfFirstMatch = reader.data[0][0]
-console.log(dateOfFirstMatch);
-
-let manUnitedWins= 0
-for (let match of reader.data) {
+// const reader = new Reader('football.csv')
+// reader.read()
+// let dateOfFirstMatch = reader.data[0][0]
+// console.log(dateOfFirstMatch);
+// Create an object that satisfies the 'DataReader' interface
+// const csvFileReader = new CsvFileReader('football.csv')
+// Create an instance of MatchReader and pass in something satisfying the 'DataReader' interface
+// const matchReader = new MatchReader(csvFileReader)
+// matchReader.load()
+// matchReader.matches
+// let manUnitedWins= 0
+// for (let match of matchReader.matches) {
   /**
    * 问题：其他工程师看到match[5] === 'H'，match[5] === 'A'不能了解到我们正在做什么，所以我们需要找到一种方式
    * 来澄清这两种比较到底代表什么意思
@@ -82,11 +87,21 @@ for (let match of reader.data) {
   //   AwayWin = 'A', // 客场赢
   //   Draw = 'D' // 平局
   // }
-  if (match[1] === 'Man United' && match[5] === MatchResult.HomeWin) {
-    manUnitedWins++
-  } else if (match[2] === 'Man United' && match[5] === MatchResult.AwayWin) { // 检查客队获胜的情况
-    manUnitedWins++
-  }
-}
-console.log(manUnitedWins);
+//   if (match[1] === 'Man United' && match[5] === MatchResult.HomeWin) {
+//     manUnitedWins++
+//   } else if (match[2] === 'Man United' && match[5] === MatchResult.AwayWin) { // 检查客队获胜的情况
+//     manUnitedWins++
+//   }
+// }
+// console.log(manUnitedWins);
 
+
+// const summary = new Summary(
+//   new WinsAnalysis('Man United'),
+//   new HtmlReport()
+// )
+// summary.buildAndPrintReport(matchReader.matches)
+const matchReader = MatchReader.fromCsv('football.csv')
+matchReader.load()
+const summary = Summary.winsAnalysisWithHtmlReport('Man United')
+summary.buildAndPrintReport(matchReader.matches)

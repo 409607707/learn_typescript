@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CsvFileReader = void 0;
 const fs_1 = __importDefault(require("fs"));
-const utils_1 = require("./utils");
 /**
  * 定义该类的原因：
  * 1. 我们希望可以重用代码
@@ -24,33 +23,8 @@ class CsvFileReader {
             .split('\n')
             .map((row) => {
             return row.split(',');
-        })
-            // .map((row: string[]): (number | string | Date | MatchResult)[] => { // 这种方式并不好，我们需要使用到类型保护
-            .map((row) => {
-            return [
-                (0, utils_1.dateStringToDate)(row[0]),
-                row[1],
-                row[2],
-                parseInt(row[3]),
-                parseInt(row[4]),
-                /*
-                  In Typescript, Type assertion is a technique that informs(通知) the compiler about the type of a variable. Type assertion is similar to typecasting but it doesn’t reconstruct code. You can use type assertion to specify a value’s type and tell the compiler not to deduce(推断) it. When we want to change a variable from one type to another such as any to number etc, we use Type assertion
-                */
-                // 类型断言：Type assertion is where you and I as the development are trying to override
-                // typescript default behavior or kind of tell typescript that hey we know what is going
-                // on here,
-                // 这里目前typescript只知道row[5]是一个字符串，所以我们需要使用类型断言覆盖掉原来的默认行为字符串，
-                // 并且告诉typescript相信我们开发人员，这里到底发生了什么
-                row[5],
-                row[6]
-            ];
-            // return row.map((item: string, index: number): (Date | string) => {
-            //   if (index === 0) {
-            //     return dateStringToDate(item)
-            //   }
-            //   return item
-            // })
         });
+        // .map((row: string[]): (number | string | Date | MatchResult)[] => { // 这种方式并不好，我们需要使用到类型保护
     }
 }
 exports.CsvFileReader = CsvFileReader;
