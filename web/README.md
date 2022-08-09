@@ -21,3 +21,9 @@
 * Build class User as a 'mega' class with tons of methods
 * Refactor User to use composition
 * Refactor User to be a reusable class that can represent any piece of data, not just a User
+
+### Refactor composition
+
+* I want to have one class that's going to be responsible for storing data related to a user.
+* I want to have another that's responsible for all that eventually logic.
+* And then one more to handle the actual like persistence of data
