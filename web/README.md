@@ -56,3 +56,44 @@
   ```typescript
   events: Eventing = new Eventing()
   ```
+
+### User类中引用Sync类，Sync类中的方法调用User类中的属性和方法，这种依赖关系的解决方案
+
+* Sync get function arguments
+  ```typescript
+  class Sync {
+  	save(id: number, data: UserProps): void {}
+  	fetch(id: number): UserProps
+  }
+
+  ```
+* Sync expects arguments that satisfy interfaces 'Serialize' and 'Deserialize'
+  ```typescript
+  /**
+  	Convert data from an object into some save-able fromat(json)
+  */
+  interface Serializable {
+  	serialize(): {}
+  }
+  class Sync {
+  	save(id: num, serialize: Serializable): void
+  	fetch(id: number, deserial: Deserializable ): void
+  }
+  /**
+  	Put data on an object using some previously saved data(json)
+  */
+  interface Deserializable {
+  	deserialize(json: {}): void
+  }
+  ```
+* Sync is a generic class to customize the type of 'data' coming into save
+
+```typescript
+class User {
+	sync: Sync<UserProps>
+}
+class Sync<T> {
+	save(id: number, data: T): AxiosPromise<T>
+	fetch(id: number): AxiosPromise<T>
+}
+```

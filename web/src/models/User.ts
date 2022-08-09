@@ -1,4 +1,3 @@
-import axios, { AxiosResponse } from "axios";
 import { Eventing } from './Eventing'
 /**
  * Interfaces are not only used to shomehow get some amount of code reuse between different
@@ -34,27 +33,5 @@ export class User {
    */
   set(update: UserProps): void {
     Object.assign(this.data, update)
-  }
-  /**
-   * Fetches some data from the server about a particular user
-   */
-  fetch(): void {
-    axios.get(`http://localhost:3000/users/${this.get('id')}`)
-    .then((res: AxiosResponse): void => {
-      this.set(res.data)
-    })
-  }
-  /**
-   * Saves some data about this user to the server
-   */
-  save(): void {
-    const id = this.get('id')
-    if (id) {
-      // put
-      axios.put(`http://localhost:3000/users/${id}`, this.data)
-    } else {
-      // post
-      axios.post('http://localhost:3000/users', this.data)
-    }
   }
 }
