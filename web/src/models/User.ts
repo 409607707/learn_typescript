@@ -75,10 +75,14 @@ export class User {
   /**
    * Saves some data about this user to the server
    */
-  save(): Promise<unknown> {
-    return new Promise((resolve, reject) => {
-
-    })
+  save(): void {
+    const id = this.get('id')
+    if (id) {
+      // put
+      axios.put(`http://localhost:3000/users/${id}`, this.data)
+    } else {
+      // post
+      axios.post('http://localhost:3000/users', this.data)
+    }
   }
-
 }
