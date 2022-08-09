@@ -27,3 +27,32 @@
 * I want to have one class that's going to be responsible for storing data related to a user.
 * I want to have another that's responsible for all that eventually logic.
 * And then one more to handle the actual like persistence of data
+
+#### How are we going to really get that eventing class into the user
+
+* Accept dependencies as second constructor arguments
+
+  ```typescript
+  constructor(private data: UserProps, private events: Eventing) {}
+  ```
+
+  - Every single time we create a user we have to create a eventing class as well
+* Only accept dependencies into constructor , Define a static class method to preconfigure; User and assign properties afterwards
+
+  ```typescript
+  static fromData(data: UserProps) {
+  	const user = new User(new Eventing())
+  	user.set(data)
+  	return user
+  }
+  private data: UserProps;
+  /**
+  	we're going to say that the constructor is always dedicated 100 percent to receiving configuration or kind of like sub modules or the class
+  */
+  constructor(private events: Eventing) {}
+  ```
+* Only accept properties into constructor; Hard code dependencies as class properties
+
+  ```typescript
+  events: Eventing = new Eventing()
+  ```
