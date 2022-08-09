@@ -549,12 +549,14 @@ parcelHelpers.defineInteropFlag(exports);
  */ parcelHelpers.export(exports, "User", ()=>User);
 var _axios = require("axios");
 var _axiosDefault = parcelHelpers.interopDefault(_axios);
+var _eventing = require("./Eventing");
 class User {
     /**
    * private data: UserProps
    * Ojbect to store information about a particular user(name, age)
    */ constructor(data){
         this.data = data;
+        this.events = new (0, _eventing.Eventing)();
     }
     /**
    *  Gets a single piece of info about this user(name, age)
@@ -584,7 +586,7 @@ class User {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","axios":"jo6P5"}],"gkKU3":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","axios":"jo6P5","./Eventing":"7459s"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -3969,6 +3971,40 @@ var utils = require("./../utils");
     return utils.isObject(payload) && payload.isAxiosError === true;
 };
 
-},{"./../utils":"5By4s"}]},["iJYvl","h7u1C"], "h7u1C", "parcelRequire2d1f")
+},{"./../utils":"5By4s"}],"7459s":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Eventing", ()=>Eventing);
+class Eventing {
+    /**
+   * we don't know the names of the different events that we're going to have
+   * we don't know what the different keys are going to be, we have no idea
+   * but we do know that they will be strings, in all these different keys are going to
+   * point at values are an array of callback functions.
+   */ events = {};
+    /**
+   * Registers an event handler with this object,
+   * so other parts of the app know when something changes
+   * 
+   * 我们将创建一个对象，该对象将存储所有添加的不同事件侦听器给这个对象内的用户
+   */ on(eventName, callback) {
+        // 第一次创建用户时，可能会有两种类型的值：一种是Callback[]，一种是undefined
+        // this.events[eventName]
+        const handlers = this.events[eventName] || [];
+        handlers.push(callback);
+        this.events[eventName] = handlers;
+    }
+    /**
+   * Triggers an event to tell other parts of the app that something has changed
+   */ trigger(eventName) {
+        const handlers = this.events[eventName];
+        if (!handlers || handlers.length === 0) return;
+        handlers.forEach((callback)=>{
+            callback();
+        });
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["iJYvl","h7u1C"], "h7u1C", "parcelRequire2d1f")
 
 //# sourceMappingURL=index.b71e74eb.js.map

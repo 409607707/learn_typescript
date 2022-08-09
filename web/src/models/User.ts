@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-
+import { Eventing } from './Eventing'
 /**
  * Interfaces are not only used to shomehow get some amount of code reuse between different
  * classes
@@ -17,6 +17,7 @@ interface UserProps {
  * sync: Sync ---- Gives us the ability to save this persons data to a remote server, then retrieve it in the future
  */
 export class User {
+  public events: Eventing = new Eventing()
   /**
    * private data: UserProps
    * Ojbect to store information about a particular user(name, age)
