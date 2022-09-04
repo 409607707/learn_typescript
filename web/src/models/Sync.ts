@@ -1,9 +1,11 @@
 import axios, { AxiosPromise } from "axios";
-import { UserProps } from './User'
+interface HasId {
+  id?: number
+}
 /**
  * 由于 data和set()来自于User类，所以我们需要修复两个类之间的依赖关系
  */
-export class Sync {
+export class Sync<T extends HasId> {
   constructor(public rootUrl: string) {
 
   }
@@ -16,7 +18,7 @@ export class Sync {
   /**
    * Saves some data about this user to the server
    */
-  save(data: UserProps): AxiosPromise {
+  save(data: T): AxiosPromise {
     const { id } = data
     if (id) {
       // put

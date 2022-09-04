@@ -1,4 +1,5 @@
 import { Eventing } from './Eventing'
+import { Sync } from './Sync'
 /**
  * Interfaces are not only used to shomehow get some amount of code reuse between different
  * classes
@@ -15,23 +16,8 @@ export interface UserProps {
  * 
  * sync: Sync ---- Gives us the ability to save this persons data to a remote server, then retrieve it in the future
  */
+const rootUrl = 'http://localhost:3000/users'
 export class User {
   public events: Eventing = new Eventing()
-  /**
-   * private data: UserProps
-   * Ojbect to store information about a particular user(name, age)
-   */
-  constructor(private data: UserProps) {}
-  /**
-   *  Gets a single piece of info about this user(name, age)
-   */
-  get(propName: string): string | number{
-    return this.data[propName]
-  }
-  /**
-   * changes information about this user(name, age)
-   */
-  set(update: UserProps): void {
-    Object.assign(this.data, update)
-  }
+  public sync: Sync<UserProps> = new Sync(rootUrl)
 }
